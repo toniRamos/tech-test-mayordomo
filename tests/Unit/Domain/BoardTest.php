@@ -7,21 +7,41 @@ use App\Domain\Board\Board;
 
 class BoardTest extends TestCase
 {
-    public function testSizeGreatherThanZero()
+    private $size = 6;
+
+    public function testCreateBoardAndMap()
     {
-        $expected = 0;
-        $board = new Board($expected);
-        $size = $board->size();
-        $this->assertIsInt($size);
-        $this->assertEquals($size, $expected);
+        $board = new Board($this->size);
+        $map = $board->map();
+        $this->assertIsArray($map);
+        $this->assertCount($this->size, $map);
     }
 
-    public function testThrowExceptionSizeNegative()
+    public function testMapIsFillShouldReturnTrue()
     {
-        $this->expectException(\Exception::class);
+        $board = new Board($this->size);
+        $this->assertTrue($board->mapIsFill());
+    }
 
-        $expected = -1;
-        $board = new Board($expected);
+    public function testLocatePlayers()
+    {
+        $playerOne = 'x';
+        $playerTwo = 'y';
+
+        $board = new Board($this->size);
+        $board->locatePlayers($playerOne, $playerTwo);
+
+        $countValues = array_count_values($board->map());
+        $expectedCellsFills = $board->getCellPerPlayer();
+
+        $this->assertEquals($expectedCellsFills, $countValues[$playerOne]);
+        $this->assertEquals($expectedCellsFills, $countValues[$playerTwo]);
+    }
+
+    public function testCellsPerPlayer()
+    {
+        $board = new Board($this->size);
+        $this->assertEquals(floor(count($board->map()) * 0.2), $board->getCellPerPlayer());
     }
 
 }
