@@ -13,8 +13,13 @@ class Board{
         }
 
         $this->size = $size;
+    }
 
-        $this->initializeMap();
+    public static function create(int $size): self
+    {
+        $board = new Board($size);
+        $board->initializeMap();
+        return $board;
     }
 
     public function size(): int
@@ -56,7 +61,7 @@ class Board{
     {
         $countCellsFills = 0;
         while($countCellsFills < $fillCells){
-            $cellRandom = rand(0, count($this->map));
+            $cellRandom = rand(0, count($this->map)-1);
 
             if('' === $this->map[$cellRandom]){
                 $this->map[$cellRandom] = $player;

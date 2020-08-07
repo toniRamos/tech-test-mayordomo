@@ -11,7 +11,7 @@ class BoardTest extends TestCase
 
     public function testCreateBoardAndMap()
     {
-        $board = new Board($this->size);
+        $board = Board::create($this->size);
         $map = $board->map();
         $this->assertIsArray($map);
         $this->assertCount($this->size, $map);
@@ -19,7 +19,7 @@ class BoardTest extends TestCase
 
     public function testMapIsFillShouldReturnTrue()
     {
-        $board = new Board($this->size);
+        $board = Board::create($this->size);
         $this->assertTrue($board->mapIsFill());
     }
 
@@ -28,7 +28,7 @@ class BoardTest extends TestCase
         $playerOne = 'x';
         $playerTwo = 'y';
 
-        $board = new Board($this->size);
+        $board = Board::create($this->size);
         $board->locatePlayers($playerOne, $playerTwo);
 
         $countValues = array_count_values($board->map());
@@ -40,7 +40,7 @@ class BoardTest extends TestCase
 
     public function testCellsPerPlayer()
     {
-        $board = new Board($this->size);
+        $board = Board::create($this->size);
         $this->assertEquals(floor(count($board->map()) * 0.2), $board->getCellPerPlayer());
     }
 

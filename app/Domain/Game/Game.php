@@ -25,25 +25,35 @@ class Game{
         $this->state = self::READY;
     }
 
-    public static function initializeGame(): self
+    public static function initializeGame(string $id): self
     {
-        $board = new Board(self::SIZE_BOARD);
+        $board = Board::create(self::SIZE_BOARD);
         $board->locatePlayers(self::PLAYER_ONE, self::PLAYER_TWO);
 
         return new Game(
             $board,
             self::generateTurn(),
-            Str::uuid()->toString()
+            $id
         );
     }
 
-    public static function generateTurn(): string
+    private static function generateTurn(): string
     {
         if(rand(0,1) === 0){
             return self::PLAYER_ONE;
         }else{
             return self::PLAYER_TWO;
         }
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'turnOff' => $this->turnOff,
+            'state' => $this->state,
+            'board' => $this->board->map()
+        ];
     }
 
 }
