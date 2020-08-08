@@ -22,6 +22,13 @@ class Board{
         return $board;
     }
 
+    public static function restoreBoard(array $map)
+    {
+        $board = new Board(count($map));
+        $board->setMap($map);
+        return $board;
+    }
+
     public function size(): int
     {
         return $this->size;
@@ -38,6 +45,11 @@ class Board{
     public function map(): array
     {
         return $this->map;
+    }
+
+    public function setMap(array $map): void
+    {
+        $this->map = $map;
     }
 
     public function mapIsFill(): bool

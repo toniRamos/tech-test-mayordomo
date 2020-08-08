@@ -13,16 +13,4 @@ class PingController extends Controller{
     public function ping(){
         return response()->json("pong", 200);
     }
-
-    public function session(){
-
-        session(['hola' => 'adios123']);
-
-        $valor = session('hola');
-        var_dump($valor);
-        die;
-
-        return response()->json("hola", 200);
-    }
-
 }

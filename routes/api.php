@@ -23,3 +23,5 @@ Route::get('ping', 'PingController@ping');
 Route::get('testSession', 'PingController@session');
 
 Route::post('game/create/{id}' , 'GameController@create');
+
+Route::get('game/{id}' , 'GameController@get');

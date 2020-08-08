@@ -18,11 +18,11 @@ class Game{
     private const FINISHED = 'finished';
     private const IN_PROGRESS = 'in progress';
 
-    function __construct(Board $board, string $turnOff, string $id) {
+    function __construct(Board $board, string $turnOff, string $id, string $state) {
         $this->board = $board;
         $this->turnOff = $turnOff;
         $this->id = $id;
-        $this->state = self::READY;
+        $this->state = $state;
     }
 
     public static function initializeGame(string $id): self
@@ -33,17 +33,14 @@ class Game{
         return new Game(
             $board,
             self::generateTurn(),
-            $id
+            $id,
+            self::READY
         );
     }
 
-    private static function generateTurn(): string
+    public static function restoreGame(Board $board, string $turnOff, string $id, string $state)
     {
-        if(rand(0,1) === 0){
-            return self::PLAYER_ONE;
-        }else{
-            return self::PLAYER_TWO;
-        }
+        return new Game($board, $turnOff, $id, $state);
     }
 
     public function toArray(): array
@@ -54,6 +51,15 @@ class Game{
             'state' => $this->state,
             'board' => $this->board->map()
         ];
+    }
+
+    private static function generateTurn(): string
+    {
+        if(rand(0,1) === 0){
+            return self::PLAYER_ONE;
+        }else{
+            return self::PLAYER_TWO;
+        }
     }
 
 }
