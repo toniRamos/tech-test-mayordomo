@@ -69,6 +69,32 @@ class Board{
         return floor($this->size * 0.2);
     }
 
+    public function moveTo(string $player, int $positionFrom, int $positionTo): void 
+    {
+        $this->checkPlayerCell($player,$positionFrom);
+        $this->checkRangePositions($positionFrom, $positionTo);
+        $this->move($player, $positionFrom, $positionTo);
+    }
+
+    private function checkPlayerCell(string $player, int $position)
+    {
+        if($this->playerInCell($positionFrom) !== $player)
+        {
+            throw new \Exception('This cell is the other player');
+        }
+    }
+
+    private function playerInCell(int $position): string
+    {
+        return $this->map[$position];
+    }
+
+    private function move(string $player,int $positionFrom, int $positionTo): void
+    {
+        //TODO:: Rellenar funcion de mover de X a Y 
+        // de momento solo mover y punto, nada de comprobaciones
+    }
+
     private function locatePlayer(string $player, int $fillCells): void
     {
         $countCellsFills = 0;

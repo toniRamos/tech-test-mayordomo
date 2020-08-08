@@ -4,6 +4,8 @@ namespace Tests\Unit\Domain;
 
 use PHPUnit\Framework\TestCase;
 use App\Domain\Board\Board;
+use Tests\Stubs\BoardStub;
+use Tests\Stubs\GameStub;
 
 class BoardTest extends TestCase
 {
@@ -11,15 +13,16 @@ class BoardTest extends TestCase
 
     public function testCreateBoardAndMap()
     {
-        $board = Board::create($this->size);
+        $board = BoardStub::defaultWithSize($this->size);
         $map = $board->map();
+
         $this->assertIsArray($map);
         $this->assertCount($this->size, $map);
     }
 
     public function testMapIsFillShouldReturnTrue()
     {
-        $board = Board::create($this->size);
+        $board = BoardStub::default();
         $this->assertTrue($board->mapIsFill());
     }
 
@@ -28,7 +31,8 @@ class BoardTest extends TestCase
         $playerOne = 'x';
         $playerTwo = 'y';
 
-        $board = Board::create($this->size);
+        $board = BoardStub::defaultWithSize($this->size);
+        $board->initializeMap();
         $board->locatePlayers($playerOne, $playerTwo);
 
         $countValues = array_count_values($board->map());
@@ -40,8 +44,7 @@ class BoardTest extends TestCase
 
     public function testCellsPerPlayer()
     {
-        $board = Board::create($this->size);
+        $board = BoardStub::defaultWithSize($this->size);
         $this->assertEquals(floor(count($board->map()) * 0.2), $board->getCellPerPlayer());
     }
-
 }

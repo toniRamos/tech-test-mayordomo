@@ -25,3 +25,5 @@ Route::get('testSession', 'PingController@session');
 Route::post('game/{id}' , 'GameController@create');
 
 Route::get('game/{id}' , 'GameController@get');
+
+Route::post('game/{id}/moveTo/{position}' , 'GameController@moveTo');
