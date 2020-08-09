@@ -29,4 +29,16 @@ class GameController extends Controller{
         }
     }
 
+    public function move(string $id, string $player, int $positionFrom, int $positionTo)
+    {
+        $game = $this->gameService->getGame($id);
+        try{
+            $this->gameService->move($game, $player, $positionFrom, $positionTo);
+            return response()->json('Correct move', 200);
+        } catch (\Exception $e)
+        {
+            return response()->json($e->getMessage(), 409);
+        }
+    }
+
 }

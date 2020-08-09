@@ -33,6 +33,6 @@ class SessionGameRepository implements GameInterface{
     private function generateGame(array $data): Game
     {
         $board = Board::restoreBoard($data['board']);
-        return Game::restoreGame($board, $data['turnOff'], $data['id'], $data['state']);
+        return Game::restoreGame($board, $data['turnOff'], $data['id'], $data['state'], $data['winner']);
     }
 }

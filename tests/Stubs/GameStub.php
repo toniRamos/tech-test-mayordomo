@@ -16,7 +16,20 @@ class GameStub {
             BoardStub::default(),
             self::TURN_OFF_PLAYER_DEFAULT,
             self::ID_DEFAULT,
-            self::STATE_DEFAULT
+            self::STATE_DEFAULT,
+            null
         );
     }
+
+    public static function finish(): Game
+    {
+        return new Game(
+            BoardStub::finisWinPlayerOne(),
+            self::TURN_OFF_PLAYER_DEFAULT,
+            self::ID_DEFAULT,
+            self::STATE_DEFAULT,
+            null
+        );
+    }
+
 }

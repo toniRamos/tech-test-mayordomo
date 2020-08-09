@@ -2,6 +2,8 @@
 
 namespace App\Domain\Board;
 
+use App\Domain\Game\Game;
+
 class Board{
     private $size;
     private $map;
@@ -71,14 +73,55 @@ class Board{
 
     public function moveTo(string $player, int $positionFrom, int $positionTo): void 
     {
-        $this->checkPlayerCell($player,$positionFrom);
         $this->checkRangePositions($positionFrom, $positionTo);
+        $this->checkPlayerCell($player,$positionFrom);
         $this->move($player, $positionFrom, $positionTo);
     }
 
-    private function checkPlayerCell(string $player, int $position)
+    public function canMove(){
+        return in_array('', $this->map());
+    }
+
+    public function existTwoPlayers(): bool
     {
-        if($this->playerInCell($positionFrom) !== $player)
+        $existTwoPlayersInMap = false;
+
+        if(in_array(GAME::PLAYER_ONE, $this->map) && in_array(GAME::PLAYER_TWO, $this->map))
+        {
+            $existTwoPlayersInMap = true;
+        }
+
+        return $existTwoPlayersInMap;
+
+    }
+
+    public function planerWin():string {
+        $countPlayerOne = 0;
+        $countPlayerTwo = 0;
+
+        for($i = 0; $i < $this->size; $i++)
+        {
+            if($this->map[$i] === Game::PLAYER_ONE)
+            {
+                $countPlayerOne++;
+            } elseif ($this->map[$i] === Game::PLAYER_TWO) {
+                $countPlayerTwo++;
+            }
+        }
+
+        if($countPlayerOne > $countPlayerTwo)
+        {
+            return Game::PLAYER_ONE;
+        } elseif ($countPlayerTwo > $countPlayerOne) {
+            return Game::PLAYER_TWO;
+        }
+
+        return Game::PLAYER_ONE.'/'.Game::PLAYER_TWO;
+    }
+
+    private function checkPlayerCell(string $player, int $position): void
+    {
+        if($this->playerInCell($position) !== $player)
         {
             throw new \Exception('This cell is the other player');
         }
@@ -89,10 +132,32 @@ class Board{
         return $this->map[$position];
     }
 
+    private function checkRangePositions(int $positionFrom, int $positionTo): void
+    {
+        if($positionFrom < 0 || $positionTo >= count($this->map))
+        {
+            throw new \Exception('The range of motion is wrong');
+        }
+    }
+
     private function move(string $player,int $positionFrom, int $positionTo): void
     {
-        //TODO:: Rellenar funcion de mover de X a Y 
-        // de momento solo mover y punto, nada de comprobaciones
+        $minorPosition = 0;
+        $biggerPosition = 0;
+
+        if($positionFrom >= $positionTo)
+        {
+            $biggerPosition = $positionFrom;
+            $minorPosition = $positionTo;
+        } else {
+            $biggerPosition = $positionTo;
+            $minorPosition = $positionFrom;
+        }
+
+        for($i = $minorPosition; $i <= $biggerPosition; $i++)
+        {
+            $this->map[$i] = $player;
+        }
     }
 
     private function locatePlayer(string $player, int $fillCells): void
