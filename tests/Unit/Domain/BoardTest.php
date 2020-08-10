@@ -12,7 +12,6 @@ class BoardTest extends TestCase
 {
     private $size = 6;
     
-
     public function testCreateBoardAndMap()
     {
         $board = BoardStub::defaultWithSize($this->size);
@@ -91,12 +90,6 @@ class BoardTest extends TestCase
         $board->moveTo('x',0,7);
     }
 
-    public function testCanMove()
-    {        
-        $board = BoardStub::finish();
-        $this->assertFalse($board->canMove());
-    }
-
     public function testWinnerPlayerOne()
     {        
         $board = BoardStub::finisWinPlayerOne();
@@ -111,14 +104,6 @@ class BoardTest extends TestCase
         $winner = $board->planerWin();
 
         $this->assertEquals(Game::PLAYER_TWO, $winner);
-    }
-
-    public function testNotWinnerEquals()
-    {        
-        $board = BoardStub::finish();
-        $winner = $board->planerWin();
-
-        $this->assertEquals(Game::PLAYER_ONE.'/'.Game::PLAYER_TWO, $winner);
     }
 
     public function testOnlyExistOnePlayerInBoard()

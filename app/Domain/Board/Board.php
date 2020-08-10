@@ -9,9 +9,9 @@ class Board{
     private $map;
 
     public function __construct(int $size) {
-        if ($size < 0)
+        if ($size <= 2)
         {
-            throw new \Exception('Size must be greater than 0');
+            throw new \Exception('Size must be greater than 2');
         }
 
         $this->size = $size;
@@ -68,7 +68,17 @@ class Board{
 
     public function getCellPerPlayer(): int 
     {
-        return floor($this->size * 0.2);
+        $percentaje = $this->size * 0.2;
+
+        list($whole, $decimal) = sscanf($percentaje, '%d.%d');
+
+        if($decimal >= 5){
+            $fill = round($this->size * 0.2);
+        } else {
+            $fill = floor($this->size * 0.2);
+        }
+
+        return $fill;
     }
 
     public function moveTo(string $player, int $positionFrom, int $positionTo): void 
@@ -76,10 +86,6 @@ class Board{
         $this->checkRangePositions($positionFrom, $positionTo);
         $this->checkPlayerCell($player,$positionFrom);
         $this->move($player, $positionFrom, $positionTo);
-    }
-
-    public function canMove(){
-        return in_array('', $this->map());
     }
 
     public function existTwoPlayers(): bool
@@ -101,22 +107,18 @@ class Board{
 
         for($i = 0; $i < $this->size; $i++)
         {
-            if($this->map[$i] === Game::PLAYER_ONE)
-            {
+            if($this->map[$i] === Game::PLAYER_ONE) {
                 $countPlayerOne++;
             } elseif ($this->map[$i] === Game::PLAYER_TWO) {
                 $countPlayerTwo++;
             }
         }
 
-        if($countPlayerOne > $countPlayerTwo)
-        {
+        if($countPlayerOne > $countPlayerTwo) {
             return Game::PLAYER_ONE;
-        } elseif ($countPlayerTwo > $countPlayerOne) {
+        } else {
             return Game::PLAYER_TWO;
         }
-
-        return Game::PLAYER_ONE.'/'.Game::PLAYER_TWO;
     }
 
     private function checkPlayerCell(string $player, int $position): void

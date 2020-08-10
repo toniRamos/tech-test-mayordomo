@@ -80,7 +80,7 @@ class Game{
 
     public function isGameFinish(): bool
     {
-        if(!$this->board->canMove() || !$this->board->existTwoPlayers())
+        if(!$this->board->existTwoPlayers())
         {
             return true;
         }
