@@ -158,4 +158,13 @@ class BoardTest extends TestCase
         $this->assertTrue($board->existTwoPlayers());
     }
 
+    public function testDontMoveInSameCellPlayer()
+    {
+        $this->expectException(\Exception::class);
+        $board = BoardStub::defaultWithSize($this->size);
+        $board->setMap(['','y','x','','x','']);
+        
+        $board->moveTo('x',2, 4);
+    }
+
 }

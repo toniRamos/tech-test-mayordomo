@@ -85,6 +85,7 @@ class Board{
     {
         $this->checkRangePositions($positionFrom, $positionTo);
         $this->checkPlayerCell($player,$positionFrom);
+        $this->checkCellTo($player,$positionTo);
         $this->move($player, $positionFrom, $positionTo);
     }
 
@@ -126,6 +127,14 @@ class Board{
         if($this->playerInCell($position) !== $player)
         {
             throw new \Exception('This cell is the other player');
+        }
+    }
+
+    private function checkCellTo(string $player, int $positionTo): void
+    {
+        if($this->playerInCell($positionTo) === $player)
+        {
+            throw new \Exception('This cell is the same player');
         }
     }
 
