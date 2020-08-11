@@ -147,16 +147,43 @@ class Board{
         $minorPosition = 0;
         $biggerPosition = 0;
 
-        if($positionFrom >= $positionTo)
-        {
-            $biggerPosition = $positionFrom;
-            $minorPosition = $positionTo;
-        } else {
-            $biggerPosition = $positionTo;
-            $minorPosition = $positionFrom;
-        }
+        [$minorPosition, $biggerPosition] = $this->getMinorAndBiggerPosition($positionFrom, $positionTo);
+
+        $findSpace = false;
+        $findOposite = false;
+
+        $this->map[$positionTo] = $player;
 
         for($i = $minorPosition; $i <= $biggerPosition; $i++)
+        {
+            if($this->map[$i] === '') {
+                $findSpace = true;
+            }
+            if($this->map[$i] !== '' && $this->map[$i] !== $player)
+            {
+                $findOposite = true;
+            }
+        }
+
+        if(!$findOposite || !$findSpace)
+        {
+            $this->fillCell($player, $minorPosition, $biggerPosition);
+        }
+    }
+
+    private function getMinorAndBiggerPosition(int $positionFrom, int $positionTo): array
+    {
+        if($positionFrom >= $positionTo)
+        {
+            return [$positionTo, $positionFrom];
+        } else {
+            return [$positionFrom, $positionTo];
+        }
+    }
+
+    private function fillCell(string $player,int $positionFrom, int $positionTo)
+    {
+        for ($i = $positionFrom; $i <= $positionTo; $i++)
         {
             $this->map[$i] = $player;
         }

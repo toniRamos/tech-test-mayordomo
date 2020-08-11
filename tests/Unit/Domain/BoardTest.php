@@ -48,13 +48,51 @@ class BoardTest extends TestCase
         $board = BoardStub::defaultWithSize($this->size);
         $this->assertEquals(floor(count($board->map()) * 0.2), $board->getCellPerPlayer());
     }
-
-    public function testMovePlayer()
+    
+    /**
+     * @dataProvider caseBoards
+     */
+    public function testMoveInCasesBoards(int $positionFrom, int $positionTo, array $expectedMap)
     {
         $board = BoardStub::defaultWithSize($this->size);
-        $board->moveTo('x',0,2);
-        $expectedMap = ['x','x','x','','','y'];
+        $board->setMap(['','','x','','y','']);
+        
+        $board->moveTo('x',$positionFrom, $positionTo);
         $this->assertEquals($expectedMap, $board->map());
+    }
+
+    public function caseBoards()
+    {
+        return [
+            [2, 1, ['','x','x','','y','']],
+            [2, 0, ['x','x','x','','y','']],
+            [2, 3, ['','','x','x','y','']],
+            [2, 4, ['','','x','x','x','']],
+            [2, 5, ['','','x','','y','x']],
+        ];
+    }
+
+    /**
+     * @dataProvider caseBoardsExampleTwo
+     */
+    public function testMoveInCasesBoardsExampleTwo(int $positionFrom, int $positionTo, array $expectedMap)
+    {
+        $board = BoardStub::defaultWithSize($this->size);
+        $board->setMap(['','x','y','','y','']);
+        
+        $board->moveTo('x',$positionFrom, $positionTo);
+        $this->assertEquals($expectedMap, $board->map());
+    }
+
+    public function caseBoardsExampleTwo()
+    {
+        return [
+            [1, 0, ['x','x','y','','y','']],
+            [1, 2, ['','x','x','','y','']],
+            [1, 3, ['','x','x','x','y','']],
+            [1, 4, ['','x','y','','x','']],
+            [1, 5, ['','x','y','','y','x']],
+        ];
     }
 
     public function testMovePlayerBackward()
